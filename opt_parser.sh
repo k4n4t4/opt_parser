@@ -87,16 +87,22 @@ opt_parser() {
         fi
         ;;
       ( '-'?* )
+        opt_parser_get_arg_count "${1%"${1#??}"}" "$_opt_parser_options"
+        if [ "$RET" -eq 1 ]; then
+          RET="$1"
+          shift
+          set -- "${RET%"${RET#??}"}" "${RET#??}" "$@"
+          continue
+        fi
+
         _opt_parser_short_opts="${1#'-'}"
         while [ "$_opt_parser_short_opts" != "" ]; do
           _opt_parser_short_opt="-${_opt_parser_short_opts%"${_opt_parser_short_opts#?}"}"
-
           opt_parser_get_arg_count "$_opt_parser_short_opt" "$_opt_parser_options"
           if [ "$RET" -eq 0 ] && [ "$_opt_parser_short_opt" != '--' ]; then
             qesc "$_opt_parser_short_opt"
             _opt_parser_option_args="$_opt_parser_option_args $RET"
           fi
-
           _opt_parser_short_opts="${_opt_parser_short_opts#?}"
         done
         shift
