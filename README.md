@@ -1,9 +1,26 @@
 # opt_parser
 
-e.g.
+外部コマンドの呼び出しやサブシェルの起動をしていないのでたぶん高速です。
+シェルスクリプトでコマンドのオプションを解析するのにつかえます。
+結果は$RETに入ります。
 
-script.sh
+
+## e.g.
+
+### script.sh
 ~~~bash
+qesc() {
+  : Omitted for brevity
+}
+
+opt_parser_get_arg_count() {
+  : Omitted for brevity
+}
+
+opt_parser() {
+  : Omitted for brevity
+}
+
 opt_parser p:1 params:3 -- "$@"
 eval "set -- $RET"
 while [ $# -gt 0 ]; do
@@ -42,10 +59,10 @@ while [ $# -gt 0 ]; do
 done
 ~~~
 
-command
+### command
 `./script.sh -ab -p 123 --abc --params A B C`
 
-output
+### output
 ~~~
 option a
 option b
